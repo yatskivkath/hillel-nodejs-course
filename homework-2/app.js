@@ -18,12 +18,15 @@ import color from "./color.js";
 import fruit from "./fruit.js";
 import {add} from "./handler.js"
 
+import dotenv from "dotenv";
+dotenv.config();
 
 const log = logger.getLogger("app.js");
 
 log.info(color);
 log.info(fruit);
 log.error("ERROR occur: My log");
+console.log(process.env.LOG_LEVEL);
 
 
 add(3,5);
