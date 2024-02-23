@@ -1,4 +1,8 @@
 import * as constants from "./constants.js";
+import { validateLogLevel, validateAppender } from "./validators/validateConfig.js";
+
+import dotenv from "dotenv";
+dotenv.config();
 
 const defaultConfig = {
     logLevel: constants.level.INFO,
@@ -16,13 +20,11 @@ function initConfig() {
     const logLevel = process.env.LOG_LEVEL?.toUpperCase();
     const appender = process.env.LOG_APPENDER?.toUpperCase();
 
-    if(logLevel){
-        //TODO check for ifExist
+    if(validateLogLevel(logLevel)){
         config.logLevel = logLevel
     }
 
-    if(appender){
-        //TODO check for ifExist
+    if(validateAppender(appender)){
         config.appender = appender
     }
 
