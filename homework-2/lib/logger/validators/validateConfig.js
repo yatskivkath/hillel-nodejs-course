@@ -1,4 +1,4 @@
-import * as constants from "./constants.js";
+import * as constants from "../constants.js";
 
 const validateLogLevel = (level) => {
     return !!level && Object.values(constants.level).includes(level);
