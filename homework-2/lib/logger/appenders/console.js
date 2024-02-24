@@ -1,4 +1,4 @@
-import formaters from "../utils/formaters.js";
+import formaters from "../utils/formatMessage.js";
 
 function log(date, level, category, message) {
     console.log(formaters.formatMessage(date, level, category, message));
