@@ -8,10 +8,14 @@ const error_path = path.substring(0, path.lastIndexOf('.')) + '_error' + path.su
 function log(date, level, category, message) {
     const text = formaters.formatMessage(date, level, category, message) + '\n';
     
-    fs.appendFile(path, text, {} , () => {});
+    fs.appendFile(path, text, {} , (err) => {
+        if(err) throw err;
+    });
 
     if(level === constants.level.ERROR) {
-        fs.appendFile(error_path, text, {}, () => {});
+        fs.appendFile(error_path, text, {}, (err) => {
+            if(err) throw err;
+        });
     }
 }
 
