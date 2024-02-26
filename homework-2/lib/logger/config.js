@@ -18,7 +18,7 @@ function enrichConfig(config) {
 function readFileConfig(path) {
     if(!path) return {}
 
-    const fileConfig = JSON.parse(fs.readFileSync(path, { encoding: "utf-8" }, () => {}));
+    const fileConfig = JSON.parse(fs.readFileSync(path, { encoding: "utf-8" }));
     return fileConfig ?? {};
 }
 
