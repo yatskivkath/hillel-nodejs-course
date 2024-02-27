@@ -25,7 +25,14 @@ function readFileConfig(path) {
 function initConfig() {
     const config = defaultConfig;
     
-    const fileConfig = readFileConfig(process.env.LOG_CONFIG_FILE);
+    let fileConfig;
+    try {
+        fileConfig = readFileConfig(process.env.LOG_CONFIG_FILE);
+    } catch (err) {
+        console.error(err);
+        fileConfig = {};
+    }
+    
 
     const logLevel = process.env.LOG_LEVEL?.toUpperCase() ?? fileConfig.logLevel?.toUpperCase();
     const appender = process.env.LOG_APPENDER?.toUpperCase() ?? fileConfig.appender?.toUpperCase();
