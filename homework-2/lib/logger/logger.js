@@ -20,11 +20,13 @@ const logger = (category) => ({
     },
 });
 
-const appender = appenderStrategy.getAppender();
+const appenders = appenderStrategy.getAppenders();
 
 function executeLog(level, category, message) {
     if (scoreLevel[level] <= config.scoreLevel) {
-        appender.log(Date.now(), level, category, message);
+        for(const appender of appenders) {
+            appender.log(Date.now(), level, category, message);
+        }
     }
 }
 
