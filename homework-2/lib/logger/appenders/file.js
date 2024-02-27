@@ -5,7 +5,7 @@ import fs from "fs";
 const path = process.env.LOG_FILE ?? "app.log";
 const error_path = path.substring(0, path.lastIndexOf('.')) + '_error' + path.substring(path.lastIndexOf('.'));  
 
-function log(date, level, category, message) {
+function log(date, level, category, message, format) {
     const text = formaters.formatMessage(date, level, category, message) + '\n';
     
     fs.appendFile(path, text, {} , (err) => {
