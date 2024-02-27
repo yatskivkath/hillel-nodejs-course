@@ -8,12 +8,15 @@ dotenv.config();
 const defaultConfig = {
     logLevel: constants.level.INFO,
     scoreLevel: constants.scoreLevel[constants.level.INFO],
-    appender: constants.appender.CONSOLE,
+    appenders: [],
     format: constants.format.DEFAULT,
 }
 
 function enrichConfig(config) {
-    config.scoreLevel = constants.scoreLevel[config.logLevel]
+    config.scoreLevel = constants.scoreLevel[config.logLevel];
+    if(!config.appenders.length) {
+        config.appenders = [constants.appender.CONSOLE];
+    }
 }
 
 function readFileConfig(path) {
@@ -21,6 +24,17 @@ function readFileConfig(path) {
 
     const fileConfig = JSON.parse(fs.readFileSync(path, { encoding: "utf-8" }));
     return fileConfig ?? {};
+}
+
+function normalizeAppenders(appenders) {
+    let appendersNormilized = [];
+    try {
+        appendersNormilized =  JSON.parse(appenders).map(appender => appender.toUpperCase());
+    } catch (err) {
+        console.error(err);
+    } finally {
+        return appendersNormilized;
+    }
 }
 
 function initConfig() {
@@ -36,15 +50,17 @@ function initConfig() {
     
 
     const logLevel = process.env.LOG_LEVEL?.toUpperCase() ?? fileConfig.logLevel?.toUpperCase();
-    const appender = process.env.LOG_APPENDER?.toUpperCase() ?? fileConfig.appender?.toUpperCase();
+    const appenders = normalizeAppenders(process.env.LOG_APPENDER ?? fileConfig.appender ?? null);
     const format =  process.env.LOG_FORMAT?.toUpperCase() ?? fileConfig.format?.toUpperCase();
-    
+
     if(validateLogLevel(logLevel)) {
         config.logLevel = logLevel;
     }
 
-    if(validateAppender(appender)) {
-        config.appender = appender;
+    for(const appender of appenders) {
+        if(validateAppender(appender)) {
+            config.appenders.push(appender);
+        }
     }
 
     if(validateFormat(format)) {
