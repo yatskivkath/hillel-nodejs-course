@@ -2,26 +2,21 @@ import config from "./config.js";
 import {scoreLevel, level} from "./constants.js";
 import * as appenderStrategy from "./appenderStrategy.js"
 
-function concatMessage(message) {
-    const delimeter = process.env.LOG_MESSAGE_DELIMETER ?? ", ";
-    return message.map(m => JSON.stringify(m)).join(delimeter);
-}
-
 const logger = (category) => ({
     info: (...message) => {
-        executeLog(level.INFO, category, concatMessage(message));
+        executeLog(level.INFO, category, message);
     },
     warn: (...message) => {
-        executeLog(level.WARN, category, concatMessage(message));
+        executeLog(level.WARN, category, message);
     },
     error: (...message) => {
-        executeLog(level.ERROR, category, concatMessage(message));
+        executeLog(level.ERROR, category, message);
     },
     debug: (...message) => {
-        executeLog(level.DEBUG, category, concatMessage(message));
+        executeLog(level.DEBUG, category, message);
     },
     trace: (...message) => {
-        executeLog(level.TRACE, category, concatMessage(message));
+        executeLog(level.TRACE, category, message);
     },
 });
 

@@ -1,7 +1,12 @@
 import * as constants from "../constants.js";
 
+function concatMessage(message) {
+    const delimeter = process.env.LOG_MESSAGE_DELIMETER ?? ", ";
+    return message.map(m => JSON.stringify(m)).join(delimeter);
+}
+
 function formatMessageDefault(date, level, category, message) {
-    return `Date: ${date}, category: ${category}, level: ${level}, message: ${message}`;
+    return `Date: ${date}, category: ${category}, level: ${level}, message: ${concatMessage(message)}`;
 }
 
 function formatMessageJson(date, level, category, message) {
