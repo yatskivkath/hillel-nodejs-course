@@ -1,10 +1,10 @@
 import * as constants from "../constants.js";
 
-function formatMessageJson(date, level, category, message) {
+function formatMessageDefault(date, level, category, message) {
     return `Date: ${date}, category: ${category}, level: ${level}, message: ${JSON.stringify(message)}`;
 }
 
-function formatMessageDefault(date, level, category, message) {
+function formatMessageJson(date, level, category, message) {
     return JSON.stringify({
         date,
         level,
