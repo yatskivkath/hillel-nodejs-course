@@ -4,14 +4,20 @@ import * as appenderStrategy from "./appenderStrategy.js"
 
 const logger = (category) => ({
     info: (message) => {
-        executeLog(level.INFO, category, message)
+        executeLog(level.INFO, category, message);
     },
     warn: (message) => {
-        executeLog(level.WARN, category, message)
+        executeLog(level.WARN, category, message);
     },
     error: (message) => {
-        executeLog(level.ERROR, category, message)
-    }
+        executeLog(level.ERROR, category, message);
+    },
+    debug: (message) => {
+        executeLog(level.DEBUG, category, message);
+    },
+    trace: (message) => {
+        executeLog(level.TRACE, category, message);
+    },
 });
 
 const appender = appenderStrategy.getAppender();
