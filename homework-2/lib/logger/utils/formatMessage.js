@@ -13,6 +13,10 @@ function formatMessageJson(date, level, category, message) {
     });
 }
 
+function formatMessageCsv(date, level, category, message) {
+    return `${date};${level};${category};${message}`;
+}
+
 function formatMessage(date, level, category, message, format = constants.format.DEFAULT) {
     switch (format) {
         case constants.format.JSON: {
@@ -20,6 +24,9 @@ function formatMessage(date, level, category, message, format = constants.format
         }
         case constants.format.DEFAULT: {
             return formatMessageDefault(date, level, category, message);
+        }
+        case constants.format.CSV: {
+            return formatMessageCsv(date, level, category, message);
         }
     }
 }
