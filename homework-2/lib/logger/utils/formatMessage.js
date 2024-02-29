@@ -19,7 +19,7 @@ function formatMessageJson(date, level, category, message) {
 }
 
 function formatMessageCsv(date, level, category, message) {
-    return `${date};${level};${category};${message}`;
+    return `${date};${level};${category};${concatMessage(message)}`;
 }
 
 function formatMessage(date, level, category, message, format = constants.format.DEFAULT) {
