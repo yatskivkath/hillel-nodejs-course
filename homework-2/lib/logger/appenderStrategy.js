@@ -18,8 +18,4 @@ function getAppenders(){
     return appenders;
 }
 
-function gerFormat() {
-    return config.format;
-}
-
-export {getAppenders, gerFormat}
+export {getAppenders}
