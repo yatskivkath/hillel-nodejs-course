@@ -1,10 +1,6 @@
 import { concatMessage } from "../utils/stringFunctions.js";
 import {Transform} from "node:stream";
 
-// function format (date, level, category, message) {
-//     return `Date: ${date}, category: ${category}, level: ${level}, message: ${concatMessage(message)}`;
-// }
-
 const format = new Transform({
     objectMode: true,
     transform(chunk, _, callback) {
