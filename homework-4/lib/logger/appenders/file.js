@@ -1,10 +1,14 @@
 import fs from "fs";
 import config from "../config/config.js";
 import * as constants from "../constants.js";
+import * as formatterStrategy from "../formatters/formatterStrategy.js"
+import { eventEmitter } from "../emmiter/emitterStrategy.js";
+
+const formatter = formatterStrategy.getFormatter();
 
 const CSV_HEADER = "Date;Level;Category;Message\n"
 
-function logDefault(timestamp, level, category, message, formatter) {
+function logDefault(timestamp, level, category, message) {
     const path = process.env.LOG_FILE ?? "app.log";
     const error_path = path.substring(0, path.lastIndexOf('.')) + '_error' + path.substring(path.lastIndexOf('.'));  
     const text = formatter.format(timestamp, level, category, message) + '\n';
@@ -20,7 +24,7 @@ function logDefault(timestamp, level, category, message, formatter) {
     }
 }
 
-function logCsv(timestamp, level, category, message, formatter) {
+function logCsv(timestamp, level, category, message) {
     const date = new Date(timestamp);
     const path = `app_${date.getDate()}_${date.getMonth()}_${date.getFullYear()}.log.csv`;
     const error_path = `app_error_${date.getDate()}_${date.getMonth()}_${date.getFullYear()}.log.csv`;
@@ -45,15 +49,20 @@ function logCsv(timestamp, level, category, message, formatter) {
     }
 }
 
-function log(timestamp, level, category, message, formatter) {
+function listen() {
+    console.log("file")
     switch (config.format) {
         case constants.format.CSV: {
-            return logCsv(timestamp, level, category, message, formatter);
+            eventEmitter.on("log", (timestamp, level, category, message) => {
+                logCsv(timestamp, level, category, message);
+            })
         }
         default: {
-            return logDefault(timestamp, level, category, message, formatter);
+            eventEmitter.on("log", (timestamp, level, category, message) => {
+                logDefault(timestamp, level, category, message);
+            })
         }
     }
 }
 
-export default {log}
+export default {listen}
