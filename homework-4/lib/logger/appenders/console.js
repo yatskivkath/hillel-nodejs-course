@@ -1,7 +1,7 @@
 import config from "../config/config.js";
 import * as constants from "../constants.js";
 import * as formatterStrategy from "../formatters/formatterStrategy.js"
-import { Writable, pipeline, Readable } from "node:stream"
+import { Writable, Readable } from "stream"
 
 import {eventEmitter } from "../emmiter/emitterStrategy.js";
 
@@ -12,7 +12,6 @@ const readStream = new Readable({
     read() {}
 })
 
-
 const writeStream = new Writable({
     objectMode: true,
     write(chunk, _, callback) {
@@ -21,19 +20,7 @@ const writeStream = new Writable({
     }
 })
 
-pipeline(
-    readStream,
-    formatter.format,
-    writeStream,
-    (err) => {
-        if (err) {
-          console.error('Pipeline failed', err);
-        } else {
-          console.log('Pipeline succeeded');
-        }
-    }
-);
-
+readStream.pipe(formatter.format).pipe(writeStream);
 
 function listen() {
     if(config.format === constants.format.CSV) {
