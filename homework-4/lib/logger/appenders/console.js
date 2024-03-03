@@ -1,20 +1,48 @@
 import config from "../config/config.js";
 import * as constants from "../constants.js";
 import * as formatterStrategy from "../formatters/formatterStrategy.js"
+import { Writable, pipeline, Readable } from "node:stream"
 
 import {eventEmitter } from "../emmiter/emitterStrategy.js";
 
 const formatter = formatterStrategy.getFormatter();
 
+const readStream = new Readable({
+    objectMode: true,
+    read() {}
+})
+
+
+const writeStream = new Writable({
+    objectMode: true,
+    write(chunk, _, callback) {
+        console.log(chunk);
+        callback();
+    }
+})
+
+pipeline(
+    readStream,
+    formatter.format,
+    writeStream,
+    (err) => {
+        if (err) {
+          console.error('Pipeline failed', err);
+        } else {
+          console.log('Pipeline succeeded');
+        }
+    }
+);
+
+
 function listen() {
-    console.log("console")
     if(config.format === constants.format.CSV) {
         console.trace("Appender does not support this format.");
         return;
     }
 
     eventEmitter.on("log", (date, level, category, message) => {
-        console.log(formatter.format(date, level, category, message));
+        readStream.push({date, level, category, message});
     })
 }
 
