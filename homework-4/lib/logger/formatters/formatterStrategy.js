@@ -1,9 +1,9 @@
-import config from "./config.js";
-import * as constants from "./constants.js";
+import config from "../config/config.js";
+import * as constants from "../constants.js";
 
-import defaultFormatter from "./formatters/default.js"
-import csvFormatter from "./formatters/csv.js";
-import jsonFormatter from "./formatters/json.js"
+import defaultFormatter from "./default.js"
+import csvFormatter from "./csv.js";
+import jsonFormatter from "./json.js"
 
 const formatterFunctions = {
     [constants.format.DEFAULT]: defaultFormatter,

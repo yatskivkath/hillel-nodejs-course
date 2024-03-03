@@ -1,4 +1,4 @@
-import config from "../config.js";
+import config from "../config/config.js";
 import * as constants from "../constants.js";
 
 function log(date, level, category, message, formatter) {

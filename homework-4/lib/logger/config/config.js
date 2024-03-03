@@ -1,5 +1,5 @@
-import * as constants from "./constants.js";
-import { validateLogLevel, validateAppender, validateFormat } from "./validators/validateConfig.js";
+import * as constants from "../constants.js";
+import { validateLogLevel, validateAppender, validateFormat } from "../validators/validateConfig.js";
 import fs from "fs";
 
 import dotenv from "dotenv";

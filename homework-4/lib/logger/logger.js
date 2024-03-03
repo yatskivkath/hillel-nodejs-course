@@ -1,7 +1,7 @@
-import config from "./config.js";
+import config from "./config/config.js";
 import {scoreLevel, level} from "./constants.js";
-import * as appenderStrategy from "./appenderStrategy.js"
-import * as formatterStrategy from "./formatterStrategy.js"
+import * as appenderStrategy from "./appenders/appenderStrategy.js"
+import * as formatterStrategy from "./formatters/formatterStrategy.js"
 
 const logger = (category) => ({
     info: (...message) => {

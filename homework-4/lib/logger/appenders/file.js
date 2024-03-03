@@ -1,5 +1,5 @@
 import fs from "fs";
-import config from "../config.js";
+import config from "../config/config.js";
 import * as constants from "../constants.js";
 
 const CSV_HEADER = "Date;Level;Category;Message\n"
