@@ -10,6 +10,6 @@ process.on('exit', () => endlineAppender.destroy());
 process.on('SIGINT', () => endlineAppender.destroy());
 process.on('SIGUSR1', () => endlineAppender.destroy());
 process.on('SIGUSR2', () => endlineAppender.destroy());
-process.on('uncaughtException', () => format.destroy());
+process.on('uncaughtException', () => endlineAppender.destroy());
 
 export {endlineAppender}

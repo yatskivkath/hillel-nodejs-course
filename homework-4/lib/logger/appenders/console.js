@@ -1,7 +1,8 @@
 import config from "../config/config.js";
 import * as constants from "../constants.js";
 import * as formatterStrategy from "../formatters/formatterStrategy.js"
-import { Writable, Readable } from "stream"
+import { Readable } from "stream"
+import { endlineAppender } from "../utils/endlineAppender.js";
 
 import {eventEmitter } from "../emmiter/emitterStrategy.js";
 
@@ -18,15 +19,7 @@ function listen() {
         read() {}
     });
     
-    const writeStream = new Writable({
-        objectMode: true,
-        write(chunk, _, callback) {
-            console.log(chunk);
-            callback();
-        }
-    });
-    
-    readStream.pipe(formatter.format).pipe(writeStream);
+    readStream.pipe(formatter.format).pipe(endlineAppender).pipe(process.stdout);
 
     eventEmitter.on("log", (date, level, category, message) => {
         readStream.push({date, level, category, message});
@@ -34,7 +27,6 @@ function listen() {
 
     function destroyStreams() {
         readStream.destroy();
-        writeStream.destroy();
     }
     
     process.on('exit', destroyStreams);

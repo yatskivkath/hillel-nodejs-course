@@ -1,5 +1,5 @@
 import { concatMessage } from "../utils/stringFunctions.js";
-import {Transform} from "node:stream";
+import {Transform} from "stream";
 
 const format = new Transform({
     objectMode: true,
