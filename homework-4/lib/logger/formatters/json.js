@@ -8,4 +8,10 @@ const format = new Transform({
     }
 })
 
+process.on('exit', () => format.destroy());
+process.on('SIGINT', () => format.destroy());
+process.on('SIGUSR1', () => format.destroy());
+process.on('SIGUSR2', () => format.destroy());
+process.on('uncaughtException', () => format.destroy());
+
 export default {format}

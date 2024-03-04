@@ -2,6 +2,7 @@ import config from "../config/config.js";
 import * as constants from "../constants.js";
 import * as formatterStrategy from "../formatters/formatterStrategy.js"
 import { Writable, Readable } from "stream"
+import fs from "fs";
 
 import {eventEmitter } from "../emmiter/emitterStrategy.js";
 
@@ -32,5 +33,16 @@ function listen() {
         readStream.push({date, level, category, message});
     })
 }
+
+function destroyStreams() {
+    readStream.destroy();
+    writeStream.destroy();
+}
+
+process.on('exit', destroyStreams);
+process.on('SIGINT', destroyStreams);
+process.on('SIGUSR1', destroyStreams);
+process.on('SIGUSR2', destroyStreams);
+process.on('uncaughtException', destroyStreams);
 
 export default {listen}
