@@ -3,7 +3,7 @@ import * as formatterStrategy from "../formatters/formatterStrategy.js"
 import { eventEmitter } from "../emmiter/emitterStrategy.js";
 import { Readable } from "node:stream";
 import { normalize } from "path";
-import { endlineAppender } from "./utils/endlineAppender.js";
+import { endlineAppender } from "../utils/endlineAppender.js";
 
 const formatter = formatterStrategy.getFormatter();
 
