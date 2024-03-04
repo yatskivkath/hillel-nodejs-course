@@ -3,7 +3,7 @@ import * as formatterStrategy from "../formatters/formatterStrategy.js"
 import { eventEmitter } from "../emmiter/emitterStrategy.js";
 import { Readable } from "node:stream";
 import { normalize } from "path";
-import { Transform } from "stream";
+import { endlineAppender } from "./utils/endlineAppender.js";
 
 const formatter = formatterStrategy.getFormatter();
 
@@ -18,13 +18,7 @@ function listen() {
 
     const writeStream = fs.createWriteStream(normalize(path), {encoding: "utf-8", flags: "a+"});
 
-    const transformStream = new Transform({
-        transform(chunk, _, callback) {
-            callback(null, chunk + '\n');
-        }
-    });
-
-    readStream.pipe(formatter.format).pipe(transformStream).pipe(writeStream);
+    readStream.pipe(formatter.format).pipe(endlineAppender).pipe(writeStream);
 
     eventEmitter.on("log", (date, level, category, message) => {
         readStream.push({date, level, category, message});
@@ -33,7 +27,6 @@ function listen() {
     function destroyStreams() {
         readStream.destroy();
         writeStream.destroy();
-        transformStream.destroy();
     }
     
     process.on('exit', destroyStreams);
