@@ -22,7 +22,7 @@ const log = logger.getLogger("app.js");
 
 log.info(color);
 log.info(fruit);
-log.error("ERROR occur: My log");
+log.error("ERROR occur: My log", {1:2});
 log.warn("Some warning");
 log.debug("DEBUG")
 

@@ -19,4 +19,10 @@ const appender = {
     FILE: "FILE",
 }
 
-export {level, scoreLevel, appender}
+const format = {
+    DEFAULT: "DEFAULT",
+    JSON: "JSON",
+    CSV: "CSV"
+}
+
+export {level, scoreLevel, appender, format}
