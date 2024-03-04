@@ -3,13 +3,17 @@ import config from "../config/config.js";
 
 import consoleAppender from "./console.js"
 import fileAppender from "./file.js"
+import fileCsvAppender from "./fileCsv.js"
 
 const appenderFunctions = {
     [constants.appender.CONSOLE]: consoleAppender,
-    [constants.appender.FILE]: fileAppender,
-    [undefined]: consoleAppender,
+    [constants.appender.FILE]: 
+        config.format === constants.format.CSV 
+            ? fileCsvAppender 
+            : fileAppender,
 }
-function getAppenders(){
+
+function getAppenders() {
     const appenders = [];
     for(const appender of config.appenders) {
         appenders.push(appenderFunctions[appender])
