@@ -4,6 +4,7 @@ import { eventEmitter } from "../emmiter/emitterStrategy.js";
 import { Readable } from "node:stream";
 import { normalize } from "path";
 import { EndineTransformer } from "./utils/EndlineTransformer.js";
+import { ErrorFilterTransformer } from "./utils/ErrorFilterTransformer.js";
 
 const formatter = formatterStrategy.getFormatter();
 
@@ -34,8 +35,10 @@ function listen() {
     });
 
     const writeStream = fs.createWriteStream(normalize(path), {encoding: "utf-8", flags: "a+"});
+    const writeStreamError = fs.createWriteStream(normalize(error_path), {encoding: "utf-8", flags: "a+"});
 
     readStream.pipe(new formatter.FormatTransformer).pipe(new EndineTransformer).pipe(writeStream);
+    readStream.pipe(new ErrorFilterTransformer).pipe(new formatter.FormatTransformer).pipe(new EndineTransformer).pipe(writeStreamError);
 
     eventEmitter.on("log", (date, level, category, message) => {
         readStream.push({date, level, category, message});
