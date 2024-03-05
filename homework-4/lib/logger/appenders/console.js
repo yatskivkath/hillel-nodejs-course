@@ -1,6 +1,7 @@
 import * as formatterStrategy from "../formatters/formatterStrategy.js"
 import { Readable } from "stream"
 import { EndineTransformer } from "./utils/EndlineTransformer.js";
+import { PayloadTransformer } from "./utils/PayloadTransformer.js";
 
 import config from "../config/config.js";
 import * as constants from "../constants.js";
@@ -19,7 +20,11 @@ function listen() {
         read() {}
     });
 
-    readStream.pipe(new formatter.FormatTransformer).pipe(new EndineTransformer).pipe(process.stdout);
+    readStream
+        .pipe(new PayloadTransformer)
+        .pipe(new formatter.FormatTransformer)
+        .pipe(new EndineTransformer)
+        .pipe(process.stdout);
 
     eventEmitter.on("log", (date, level, category, message) => {
         readStream.push({date, level, category, message});

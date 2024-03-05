@@ -7,9 +7,8 @@ class JsonFormatTransformer extends Transform {
         });
     }
 
-    _transform(chunk, _, callback) {
-        const {date, level, category, message} = chunk;
-        callback(null, JSON.stringify({ date, level, category, message }));
+    _transform(chunk, _, next) {
+        next(null, JSON.stringify(chunk));
     }
 }
 

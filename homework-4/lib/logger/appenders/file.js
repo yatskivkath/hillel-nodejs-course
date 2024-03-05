@@ -8,8 +8,9 @@ import { EndineTransformer } from "./utils/EndlineTransformer.js";
 import { ErrorFilterTransformer } from "./utils/ErrorFilterTransformer.js"
 import * as constants from "../constants.js";
 import config from "../config/config.js";
+import { PayloadTransformer } from "./utils/PayloadTransformer.js";
 
-const CSV_HEADER = "Date;Level;Category;Message\n"
+const CSV_HEADER = "Date;Level;Category;Message;Payload\n"
 
 const formatter = formatterStrategy.getFormatter();
 
@@ -50,8 +51,18 @@ function listen() {
     const writeStream = fs.createWriteStream(normalize(path), {encoding: "utf-8", flags: "a+"});
     const writeStreamError = fs.createWriteStream(normalize(error_path), {encoding: "utf-8", flags: "a+"});
 
-    readStream.pipe(new formatter.FormatTransformer).pipe(new EndineTransformer).pipe(writeStream);
-    readStream.pipe(new ErrorFilterTransformer).pipe(new formatter.FormatTransformer).pipe(new EndineTransformer).pipe(writeStreamError);
+    readStream
+        .pipe(new PayloadTransformer)
+        .pipe(new formatter.FormatTransformer)
+        .pipe(new EndineTransformer)
+        .pipe(writeStream);
+        
+    readStream
+        .pipe(new ErrorFilterTransformer)
+        .pipe(new PayloadTransformer)
+        .pipe(new formatter.FormatTransformer)
+        .pipe(new EndineTransformer)
+        .pipe(writeStreamError);
 
     eventEmitter.on("log", (date, level, category, message) => {
         readStream.push({date, level, category, message});

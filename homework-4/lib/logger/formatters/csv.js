@@ -10,9 +10,9 @@ class CsvFormatTransformer extends Transform {
         });
     }
 
-    _transform(chunk, _, callback) {
-        const {date, level, category, message} = chunk;
-        callback(null, `${date};${level};${category};${concatMessage(message)}`);
+    _transform(chunk, _, next) {
+        const {date, level, category, message, payload} = chunk;
+        next(null, `${date};${level};${category};${concatMessage(message)};${payload}`);
     }
 }
 
