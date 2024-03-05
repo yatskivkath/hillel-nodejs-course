@@ -2,7 +2,7 @@ import config from "../config/config.js";
 import * as constants from "../constants.js";
 import * as formatterStrategy from "../formatters/formatterStrategy.js"
 import { Readable } from "stream"
-import { endlineAppender } from "../utils/endlineAppender.js";
+import { EndineTransformer } from "./utils/EndlineTransformer.js";
 
 import {eventEmitter } from "../emmiter/emitterStrategy.js";
 
@@ -18,21 +18,19 @@ function listen() {
         objectMode: true,
         read() {}
     });
-    
-    readStream.pipe(formatter.format).pipe(endlineAppender).pipe(process.stdout);
+
+    readStream.pipe(new formatter.FormatTransformer).pipe(new EndineTransformer).pipe(process.stdout);
 
     eventEmitter.on("log", (date, level, category, message) => {
         readStream.push({date, level, category, message});
     });
 
     function destroyStreams() {
-        readStream.destroy();
+        readStream.push(null);
     }
     
-    process.on('exit', destroyStreams);
+    process.on('beforeExit', destroyStreams);
     process.on('SIGINT', destroyStreams);
-    process.on('SIGUSR1', destroyStreams);
-    process.on('SIGUSR2', destroyStreams);
     process.on('uncaughtException', destroyStreams);
 }
 
