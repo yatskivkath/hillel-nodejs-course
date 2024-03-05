@@ -6,12 +6,41 @@ import * as formatterStrategy from "../formatters/formatterStrategy.js"
 import { eventEmitter } from "../emmiter/emitterStrategy.js";
 import { EndineTransformer } from "./utils/EndlineTransformer.js";
 import { ErrorFilterTransformer } from "./utils/ErrorFilterTransformer.js"
+import * as constants from "../constants.js";
+import config from "../config/config.js";
+
+const CSV_HEADER = "Date;Level;Category;Message\n"
 
 const formatter = formatterStrategy.getFormatter();
 
+function getNames() {
+    switch(config.format) {
+        case constants.format.CSV: {
+            const date = new Date();
+            const path = `app_${date.getDate()}_${date.getMonth()}_${date.getFullYear()}.log.csv`;
+            const error_path = `app_error_${date.getDate()}_${date.getMonth()}_${date.getFullYear()}.log.csv`;
+
+            if(!fs.existsSync(path)) {
+                fs.writeFileSync(path, CSV_HEADER);
+            }
+        
+            if(!fs.existsSync(error_path)) {
+                fs.writeFileSync(error_path, CSV_HEADER);
+            }
+        
+            return {path, error_path}
+        }
+        default: {
+            const path = process.env.LOG_FILE ?? "app.log";
+            const error_path = path.substring(0, path.lastIndexOf('.')) + '_error' + path.substring(path.lastIndexOf('.'));  
+
+            return {path, error_path}
+        }
+    }
+}
+
 function listen() {
-    const path = process.env.LOG_FILE ?? "app.log";
-    const error_path = path.substring(0, path.lastIndexOf('.')) + '_error' + path.substring(path.lastIndexOf('.'));  
+    const {path, error_path} = getNames();
 
     const readStream = new Readable({
         objectMode: true,
