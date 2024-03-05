@@ -1,9 +1,9 @@
-import config from "../config/config.js";
-import * as constants from "../constants.js";
 import * as formatterStrategy from "../formatters/formatterStrategy.js"
 import { Readable } from "stream"
 import { EndineTransformer } from "./utils/EndlineTransformer.js";
 
+import config from "../config/config.js";
+import * as constants from "../constants.js";
 import {eventEmitter } from "../emmiter/emitterStrategy.js";
 
 const formatter = formatterStrategy.getFormatter();

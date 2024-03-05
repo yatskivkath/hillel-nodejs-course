@@ -1,8 +1,9 @@
 import fs from "fs";
-import * as formatterStrategy from "../formatters/formatterStrategy.js"
-import { eventEmitter } from "../emmiter/emitterStrategy.js";
 import { Readable } from "node:stream";
 import { normalize } from "path";
+
+import * as formatterStrategy from "../formatters/formatterStrategy.js"
+import { eventEmitter } from "../emmiter/emitterStrategy.js";
 import { EndineTransformer } from "./utils/EndlineTransformer.js";
 import { ErrorFilterTransformer } from "./utils/ErrorFilterTransformer.js";
 
