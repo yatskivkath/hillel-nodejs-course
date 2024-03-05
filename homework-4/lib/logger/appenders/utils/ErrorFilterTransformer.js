@@ -10,11 +10,11 @@ class ErrorFilterTransformer extends Transform {
         });
     }
 
-    _transform(chunk, _, callback) {
+    _transform(chunk, _, next) {
         if(chunk.level === constants.level.ERROR) {
-            callback(null, chunk);
+            next(null, chunk);
         } else {
-            callback(null, null);
+            next(null, null);
         }
     }
 }

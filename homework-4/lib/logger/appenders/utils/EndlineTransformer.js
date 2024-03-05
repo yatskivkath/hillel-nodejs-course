@@ -5,9 +5,9 @@ class EndineTransformer extends Transform {
         super(options);
     }
 
-    _transform(chunk, _, callback) {
+    _transform(chunk, _, next) {
         const s = chunk.toString("utf8") + "\n";
-        callback(null, s);
+        next(null, s);
     }
 }
 

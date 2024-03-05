@@ -8,12 +8,12 @@ class PayloadTransformer extends Transform {
         });
     }
 
-    _transform(chunk, _, callback) {
+    _transform(chunk, _, next) {
         const chunk_payload = {
             ...chunk,
             payload: process.argv[1],
         };
-        callback(null, chunk_payload);
+        next(null, chunk_payload);
     }
 }
 

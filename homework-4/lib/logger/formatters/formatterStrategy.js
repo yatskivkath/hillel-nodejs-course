@@ -1,6 +1,5 @@
 import config from "../config/config.js";
 import * as constants from "../constants.js";
-
 import defaultFormatter from "./default.js"
 import csvFormatter from "./csv.js";
 import jsonFormatter from "./json.js"

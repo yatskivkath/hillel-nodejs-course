@@ -1,5 +1,6 @@
-import { concatMessage } from "../utils/stringFunctions.js";
 import {Transform} from "stream";
+
+import { concatMessage } from "../utils/stringFunctions.js";
 
 class DefaultFormatTransformer extends Transform {
     constructor(options) {
