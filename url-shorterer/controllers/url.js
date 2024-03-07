@@ -1,9 +1,11 @@
-import { generateHash } from "../utils/hashFunctions.js";
 import * as constants from "../constants.js";
+import db from "../db/index.js";
 
 const createUrl = (req, res) => {
     const {url} = req.body;
-    const hash = generateHash();
+    const {email} = req.session.email;
+
+    const hash = db.urls.create({url, email});
 
     res.status(201).json({
         shortUrl: `${constants.BASE_URL}${hash}`
@@ -13,9 +15,10 @@ const createUrl = (req, res) => {
 const readUrl = (req, res) => {
     const {code} = req.params;
 
-    res.status(200).json({
-        //data
-    })
+    const url = db.urls.get({code});
+    db.urls.visit({code});
+
+    res.status(200).json(url);
 }
 
 export {

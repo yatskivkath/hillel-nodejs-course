@@ -1,4 +1,4 @@
-import * as constants from "../constants.js"
+import { CHARACTERS } from "../constants.js"
 
 const generateHash = (len = 5) => {
     if(!Number(len)) {
@@ -7,7 +7,7 @@ const generateHash = (len = 5) => {
 
     let result = "";
     for(let i = 0; i< len; i++) {
-        result += constants.CHARACTERS.charAt(Math.floor(Math.random() * characters.length));
+        result += CHARACTERS.charAt(Math.floor(Math.random() * CHARACTERS.length));
     }
 
     return result;

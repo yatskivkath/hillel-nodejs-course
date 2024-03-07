@@ -1,5 +1,7 @@
-import * as users from "./users/services.js";
+import UserServices from "./users/services.js";
+import UrlServices from "./urls/services.js";
 
-export {
-    users,
+export default {
+    users: UserServices,
+    urls: UrlServices,
 }

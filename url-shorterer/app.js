@@ -5,7 +5,7 @@ import urlRouter from "./routes/url.js"
 
 const app = express();
 
-app.use(express.json())
+app.use(express.json());
 
 app.use("/user", userRouter);
 app.use("/code", codeRouter);

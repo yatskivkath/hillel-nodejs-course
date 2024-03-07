@@ -1,4 +1,4 @@
-import * as db from "../db/index.js";
+import db from "../db/index.js";
 import { validateUser } from "../db/users/validators.js";
 
 const createUser = (req, res) => {
@@ -8,7 +8,7 @@ const createUser = (req, res) => {
         throw new Error ("Incorrect data");
     }
 
-    db.users.add({name, email, password});
+    db.users.create({name, email, password});
     
     res.status(201).json({name, email, password});
 }
