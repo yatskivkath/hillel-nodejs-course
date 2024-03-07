@@ -81,7 +81,7 @@ async function listen() {
     });
 
     eventEmitter.on("log", (date, level, category, message) => {
-        console.log("log")
+        readStream.push({date, level, category, message});
     });
 }
 
