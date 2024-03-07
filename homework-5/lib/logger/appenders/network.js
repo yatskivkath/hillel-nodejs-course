@@ -12,14 +12,12 @@ const formatter = formatterStrategy.getFormatter();
 
 class CacheTransformer extends Transform {
     constructor(options) {
-        super({
-            ...options,
-            objectMode: true,
-        });
+        super(options);
     }
 
     _transform(chunk, _, next) {
-        CACHE.push(chunk);
+        console.log(chunk)
+        CACHE.push(chunk.toString("utf8"));
         next(null, chunk);
     }
 }
@@ -27,15 +25,22 @@ class CacheTransformer extends Transform {
 function createLogsServer() {
     const server = net.createServer();
 
-    server.on("data", (data) => {
-        console.log(data)
+    server.on("connection", (socket) => {
+        socket.pipe(new CacheTransformer);
+
+        socket.on("data", (data) => {
+            console.log(CACHE);
+        });
+
+        socket.on("error", (err) => { 
+            console.error(err);
+          }); 
     })
 
-    server.on("connection", (socket) =>{
-        console.log(socket.remoteAddress + ":" + socket.remotePort);
+    server.on('error', (err) => { 
+        console.error(err)
+      }); 
 
-        socket.end();
-    })
 
     return server
 }
@@ -48,11 +53,10 @@ function createConnectionServer() {
         res.end(JSON.stringify({url, method, headers}));
     });
 
-
     return server
 }
 
-function listen() {
+async function listen() {
     const connectionServer = createConnectionServer();
     const logsServer = createLogsServer();
 
@@ -64,14 +68,21 @@ function listen() {
         console.log("logsServer connection established");
     });
 
+    const readStream = new ReadStream;
+
     const client = net.connect({port: process.env.LOG_NET_PORT, host: process.env.LOG_HOST}, () => {
         console.log("Connected");
-        client.write("hello from client")
+        readStream.pipe(new formatter.FormatTransformer).pipe(client);
+        // readStream.push({date: "today", message: "lorem"});
+        // readStream.push({date: "today", message: "lorem2"});
+        // readStream.push({date: "today", message: "lorem3"});
+        // readStream.push({date: "today", message: "lorem4"});
+        // readStream.push({date: "today", message: "lorem5"});
+        // readStream.push({date: "today", message: "lorem6"});
     });
 
     eventEmitter.on("log", (date, level, category, message) => {
         console.log("log")
-        client.write(`${date} ${level}`);
     });
 }
 
