@@ -9,7 +9,6 @@ function create(user) {
         ...user,
         createdAt: Date.now(),
     });
-    console.log(users);
 }
 
 function get(email) {

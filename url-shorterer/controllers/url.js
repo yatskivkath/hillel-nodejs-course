@@ -16,7 +16,6 @@ const readUrl = (req, res) => {
     const {code} = req.params;
 
     const url = db.urls.get({code});
-    db.urls.visit({code});
 
     res.status(200).json(url);
 }

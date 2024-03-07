@@ -6,8 +6,6 @@ export default (req, res, next) => {
         const [email, password] = auth.substring(6, auth.length).split(":");
         const user = db.users.get(email);
 
-        console.log(email, password)
-
         if(!user || user.password !== password) {
             res.status(404).end("No Access");
         } else {
