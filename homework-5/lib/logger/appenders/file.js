@@ -9,6 +9,7 @@ import { ErrorFilterTransformer } from "./utils/ErrorFilterTransformer.js"
 import * as constants from "../constants.js";
 import config from "../config/config.js";
 import { PayloadTransformer } from "./utils/PayloadTransformer.js";
+import { ReadStream } from "./utils/ReadStream.js";
 
 const CSV_HEADER = "Date;Level;Category;Message;Payload\n"
 
@@ -43,10 +44,7 @@ function getNames() {
 function listen() {
     const {path, error_path} = getNames();
 
-    const readStream = new Readable({
-        objectMode: true,
-        read() {}
-    });
+    const readStream = new ReadStream;
 
     const writeStream = fs.createWriteStream(normalize(path), {encoding: "utf-8", flags: "a+"});
     const writeStreamError = fs.createWriteStream(normalize(error_path), {encoding: "utf-8", flags: "a+"});

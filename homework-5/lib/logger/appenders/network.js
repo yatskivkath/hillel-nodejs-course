@@ -2,6 +2,8 @@ import * as http from "http";
 import * as net from "net";
 import { Transform } from "stream";
 
+import config from "../config/config.js";
+import * as constants from "../constants.js";
 import {eventEmitter } from "../emmiter/emitterStrategy.js";
 import { ReadStream } from "./utils/ReadStream.js";
 import * as formatterStrategy from "../formatters/formatterStrategy.js"
@@ -30,9 +32,7 @@ function createLogsServer() {
     server.on("connection", (socket) => {
         socket.pipe(new CacheTransformer);
 
-        socket.on("data", (data) => {
-            console.log(CACHE);
-        });
+        socket.on("data", () => {});
 
         socket.on("error", (err) => { 
             console.error(err);
@@ -41,8 +41,9 @@ function createLogsServer() {
 
     server.on('error', (err) => { 
         console.error(err)
-      }); 
+    }); 
 
+    server.listen(process.env.LOG_NET_PORT, () => {});
 
     return server
 }
@@ -50,25 +51,31 @@ function createLogsServer() {
 function createConnectionServer() {
 
     const server = http.createServer((req, res) => {
-        const {url, method, headers} = req;
+        const {url, method} = req;
 
-        res.end(JSON.stringify({url, method, headers}));
+        if(method === "GET" && url === "/logs") {
+            res.write(JSON.stringify(CACHE));
+            res.statusCode = 200;
+        } else{
+            res.statusCode = 404;
+        }
+
+        res.end();
     });
+
+    server.listen(process.env.LOG_HTTP_PORT, process.env.LOG_HOST, () => {});
 
     return server
 }
 
 async function listen() {
+    if(config.format === constants.format.CSV) {
+        console.trace("Appender does not support this format.");
+        return;
+    }
+
     const connectionServer = createConnectionServer();
     const logsServer = createLogsServer();
-
-    connectionServer.listen(process.env.LOG_HTTP_PORT, process.env.LOG_HOST, () => {
-        console.log("connectionServer connection established");
-    });
-
-    logsServer.listen(process.env.LOG_NET_PORT, () => {
-        console.log("logsServer connection established");
-    });
 
     const readStream = new ReadStream;
 
