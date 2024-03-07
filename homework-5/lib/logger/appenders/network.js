@@ -80,7 +80,6 @@ async function listen() {
     const readStream = new ReadStream;
 
     const client = net.connect({port: process.env.LOG_NET_PORT, host: process.env.LOG_HOST}, () => {
-        console.log("Connected");
         readStream
             .pipe(new formatter.FormatTransformer)
             .pipe(new EndineTransformer)
