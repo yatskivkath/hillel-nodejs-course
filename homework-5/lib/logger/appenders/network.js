@@ -32,20 +32,18 @@ function createLogsServer() {
     server.on("connection", (socket) => {
         socket.pipe(new CacheTransformer);
 
-        socket.on("data", () => {});
-
         socket.on("error", (err) => { 
             console.error(err);
-          }); 
-    })
+        }); 
+    });
 
     server.on('error', (err) => { 
-        console.error(err)
+        console.error(err);
     }); 
 
     server.listen(process.env.LOG_NET_PORT, () => {});
 
-    return server
+    return server;
 }
 
 function createConnectionServer() {
@@ -65,7 +63,7 @@ function createConnectionServer() {
 
     server.listen(process.env.LOG_HTTP_PORT, process.env.LOG_HOST, () => {});
 
-    return server
+    return server;
 }
 
 async function listen() {
