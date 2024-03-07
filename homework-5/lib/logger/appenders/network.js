@@ -5,6 +5,7 @@ import { Transform } from "stream";
 import {eventEmitter } from "../emmiter/emitterStrategy.js";
 import { ReadStream } from "./utils/ReadStream.js";
 import * as formatterStrategy from "../formatters/formatterStrategy.js"
+import { EndineTransformer } from "./utils/EndlineTransformer.js";
 
 const CACHE = []
 
@@ -16,8 +17,9 @@ class CacheTransformer extends Transform {
     }
 
     _transform(chunk, _, next) {
-        console.log(chunk)
-        CACHE.push(chunk.toString("utf8"));
+        const logs = chunk.toString("utf8").split('\n');
+        logs.pop();
+        CACHE.push(...logs);
         next(null, chunk);
     }
 }
@@ -72,13 +74,10 @@ async function listen() {
 
     const client = net.connect({port: process.env.LOG_NET_PORT, host: process.env.LOG_HOST}, () => {
         console.log("Connected");
-        readStream.pipe(new formatter.FormatTransformer).pipe(client);
-        // readStream.push({date: "today", message: "lorem"});
-        // readStream.push({date: "today", message: "lorem2"});
-        // readStream.push({date: "today", message: "lorem3"});
-        // readStream.push({date: "today", message: "lorem4"});
-        // readStream.push({date: "today", message: "lorem5"});
-        // readStream.push({date: "today", message: "lorem6"});
+        readStream
+            .pipe(new formatter.FormatTransformer)
+            .pipe(new EndineTransformer)
+            .pipe(client);
     });
 
     eventEmitter.on("log", (date, level, category, message) => {
