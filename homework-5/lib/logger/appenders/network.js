@@ -13,6 +13,8 @@ const CACHE = []
 
 const formatter = formatterStrategy.getFormatter();
 
+let readStream;
+
 class CacheTransformer extends Transform {
     constructor(options) {
         super(options);
@@ -75,7 +77,7 @@ async function listen() {
     const connectionServer = createConnectionServer();
     const logsServer = createLogsServer();
 
-    const readStream = new ReadStream;
+    readStream = new ReadStream;
 
     const client = net.connect({port: process.env.LOG_NET_PORT, host: process.env.LOG_HOST}, () => {
         readStream
@@ -89,4 +91,8 @@ async function listen() {
     });
 }
 
-export default {listen}
+function close() {
+    readStream.push(null);
+}
+
+export default {listen, close}

@@ -15,6 +15,8 @@ const CSV_HEADER = "Date;Level;Category;Message;Payload\n"
 
 const formatter = formatterStrategy.getFormatter();
 
+let readStream;
+
 function getNames() {
     switch(config.format) {
         case constants.format.CSV: {
@@ -44,8 +46,7 @@ function getNames() {
 function listen() {
     const {path, error_path} = getNames();
 
-    const readStream = new ReadStream;
-
+    readStream = new ReadStream;
     const writeStream = fs.createWriteStream(normalize(path), {encoding: "utf-8", flags: "a+"});
     const writeStreamError = fs.createWriteStream(normalize(error_path), {encoding: "utf-8", flags: "a+"});
 
@@ -65,14 +66,10 @@ function listen() {
     eventEmitter.on("log", (date, level, category, message) => {
         readStream.push({date, level, category, message});
     });
-
-    function destroyStreams() {
-        readStream.push(null);
-    }
-    
-    process.on('beforeExit', destroyStreams);
-    process.on('SIGINT', destroyStreams);
-    process.on('uncaughtException', destroyStreams);
 }
 
-export default {listen}
+function close() {
+    readStream.push(null);
+}
+
+export default {listen, close}

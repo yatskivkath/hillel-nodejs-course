@@ -35,3 +35,5 @@ try {
 
 
 add(3,5);
+
+logger.closeLogger();
