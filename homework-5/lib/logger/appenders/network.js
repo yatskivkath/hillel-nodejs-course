@@ -15,24 +15,15 @@ const formatter = formatterStrategy.getFormatter();
 
 let readStream;
 
-class CacheTransformer extends Transform {
-    constructor(options) {
-        super(options);
-    }
-
-    _transform(chunk, _, next) {
-        const logs = chunk.toString("utf8").split('\n');
-        logs.pop();
-        CACHE.push(...logs);
-        next(null, chunk);
-    }
-}
-
 function createLogsServer() {
     const server = net.createServer();
 
     server.on("connection", (socket) => {
-        socket.pipe(new CacheTransformer);
+        socket.on("data", (data) => { 
+            const logs = data.toString("utf8").split('\n');
+            logs.pop();
+            CACHE.push(...logs);
+        })
 
         socket.on("error", (err) => { 
             console.error(err);
