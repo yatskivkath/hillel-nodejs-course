@@ -13,6 +13,9 @@ function getUrl(req, res) {
     const { code } = req.params
     
     const shortUrl = urlService.getUrlPublicData(code);
+    if(!shortUrl) {
+        res.status(404).end("Not Found");
+    }
 
     res.json(shortUrl);
 }
