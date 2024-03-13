@@ -13,6 +13,11 @@ export default class UserService {
     create(name, email, password) {
         const user = new UserModel(generate(sequenceName), name, email, password);
         this.userRepository.save(user);
+
+        return {
+            ...user,
+            password: undefined
+        };
     }
 
     getUsersPublicData() {

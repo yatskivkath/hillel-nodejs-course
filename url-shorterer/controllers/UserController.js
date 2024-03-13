@@ -10,16 +10,6 @@ export default class UserController extends Router {
     }
 
     init = ()=> {
-        this.get("/", (req,res) =>{
-            const users = this.userService.getUsersPublicData();
-
-            res.render("users", {users});
-        })
-
-        this.all("/", (req,res)=>{
-            res.send("UserController here!");
-        })
-
         this.get("/all", (req, res) => {
             const users = this.userService.getUsersPublicData();
 
@@ -27,10 +17,10 @@ export default class UserController extends Router {
         });
 
         this.post("/create", (req, res) => {
-            const {name, password} = req.body;
-            this.userService.create(name, password);
+            const {name, email, password} = req.body;
+            const user = this.userService.create(name, email, password);
 
-            res.send("Saved!");
+            res.json(user);
         })
     }
 
