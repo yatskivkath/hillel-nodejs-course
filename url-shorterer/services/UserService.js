@@ -35,5 +35,23 @@ export default class UserService {
         return result;
     }
 
+    checkPassword(email, password) {
+        if(!email || !password){
+            return false;
+        }
+
+        const user = this.userRepository.getUserByEmail(email);
+
+        if(!user) {
+            return false;
+        }
+
+        if (user?.password === password) {
+            return true;
+        }
+
+        return false;
+    }
+
 
 }

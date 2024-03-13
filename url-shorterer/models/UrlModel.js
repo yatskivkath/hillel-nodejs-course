@@ -1,4 +1,4 @@
-import { generateHash } from "../utils/hashFunctions";
+import { generateHash } from "../utils/hashFunctions.js";
 
 export default class UrlModel{
     code;

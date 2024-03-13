@@ -1,8 +1,6 @@
-import db from "../db/index.js"
 import UserService from "../services/UserService.js";
 
 const userService = new UserService();
-
 
 export default (req, res, next) => {
     const auth = req.header("Authorization");
