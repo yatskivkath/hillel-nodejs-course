@@ -1,28 +1,21 @@
-import {Router} from "express";
 import UserService from "../services/UserService.js";
 
-export default class UserController extends Router {
-    constructor() {
-        super();
-        this.userService = new UserService();
+const userService = new UserService();
 
-        this.init()
-    }
+function getAllUsers(req, res) {
+    const users = this.userService.getUsersPublicData();
 
-    init = ()=> {
-        this.get("/", (req, res) => {
-            const users = this.userService.getUsersPublicData();
+    res.json(users);
+}
 
-            res.json(users);
-        });
+function createUser (req, res) {
+    const {name, email, password} = req.body;
+    const user = this.userService.create(name, email, password);
 
-        this.post("/create", (req, res) => {
-            const {name, email, password} = req.body;
-            const user = this.userService.create(name, email, password);
+    res.json(user);
+}
 
-            res.json(user);
-        })
-    }
-
-
+export {
+    createUser,
+    getAllUsers,
 }

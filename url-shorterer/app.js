@@ -1,19 +1,19 @@
 import express from "express"
-import UserController from "./controllers/UserController.js";
-import UrlController from "./controllers/UrlController.js"
+import userRouter from "./routes/user.js";
+import codeRouter from "./routes/code.js";
+import urlRouter from "./routes/url.js"
 import auth from "./middlewares/auth.js";
 
 const app = express();
 
 app.use(express.json());
-app.use(auth);
 
 app.all("/", (req, res)=>{
     res.send("Works!");
 });
 
-app.use("/users", new UserController());
-app.use("/urls", new UrlController());
+app.use("/users", userRouter);
+app.use("/urls", urlRouter);
 
 app.use((err, req, res, next) => {
     console.log(err);
