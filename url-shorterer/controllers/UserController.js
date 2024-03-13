@@ -10,7 +10,7 @@ export default class UserController extends Router {
     }
 
     init = ()=> {
-        this.get("/all", (req, res) => {
+        this.get("/", (req, res) => {
             const users = this.userService.getUsersPublicData();
 
             res.json(users);

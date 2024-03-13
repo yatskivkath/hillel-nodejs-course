@@ -9,7 +9,7 @@ app.all("/", (req, res)=>{
     res.send("Works!");
 });
 
-app.use("/user", new UserController());
+app.use("/users", new UserController());
 
 app.use((err, req, res, next) => {
     console.log(err);
