@@ -1,6 +1,6 @@
 const users = new Map();
 
-users.set("1", {userId: "userId", name: "qwe", email: "qwe@com", password: "qwe"});
+users.set("0", {userId: "0", name: "Kateryna Yatskiv", email: "test@mail.com", password: "admin"});
 
 export default class UserRepository {
     save(user) {

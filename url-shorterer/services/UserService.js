@@ -20,6 +20,10 @@ export default class UserService {
         };
     }
 
+    getByEmail(email) {
+        return this.userRepository.getUserByEmail(email);
+    }
+
     getUsersPublicData() {
         const users = this.userRepository.getAll();
 

@@ -12,8 +12,10 @@ export default (req, res, next) => {
         if(!hasAccess) {
             res.status(404).end("No Access");
         } else {
+            const user = userService.getByEmail(email);
             req.session = {
                 email,
+                userId: user.userId,
             };
             next();
             return;

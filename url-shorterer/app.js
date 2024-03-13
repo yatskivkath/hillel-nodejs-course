@@ -2,7 +2,6 @@ import express from "express"
 import userRouter from "./routes/user.js";
 import codeRouter from "./routes/code.js";
 import urlRouter from "./routes/url.js"
-import auth from "./middlewares/auth.js";
 
 const app = express();
 
@@ -14,6 +13,7 @@ app.all("/", (req, res)=>{
 
 app.use("/users", userRouter);
 app.use("/urls", urlRouter);
+app.use("/code", codeRouter);
 
 app.use((err, req, res, next) => {
     console.log(err);

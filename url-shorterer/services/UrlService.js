@@ -6,17 +6,24 @@ export default class UrlService {
         this.urlRepository = new UrlRepository();
     }
 
-    create(redirectUrl, userEmail) {
-        const url =  new UrlModel(redirectUrl, userEmail);
+    create(redirectUrl, userId) {
+        const url =  new UrlModel(redirectUrl, userId);
         this.urlRepository.save(url);
 
         return url;
     }
 
     get(code) {
+        return this.urlRepository.get(code);
+    }
+
+    getUrlPublicData(code) {
         const url = this.urlRepository.get(code);
 
-        return url;
+        return {
+            ...url,
+            userId: undefined
+        }
     }
 
     visit(code) {

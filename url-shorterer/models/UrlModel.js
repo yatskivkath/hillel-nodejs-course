@@ -7,11 +7,10 @@ export default class UrlModel{
     createdAt = Date.now();
     userId;
 
-    constructor(url, userEmail) {
+    constructor(url, userId) {
         this.url = url;
         this.code = generateHash();
-
-        this.userId = UserRepository; // changes
+        this.userId = userId;
     }
 
 }

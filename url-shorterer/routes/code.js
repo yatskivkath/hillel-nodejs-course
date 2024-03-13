@@ -1,9 +1,8 @@
 import express from "express"
+import { redirectByCode } from "../controllers/codeController.js";
 
 const router = new express.Router();
 
-router.get("/:code", (req, res) => {s
-    res.status(201).end("code router");
-});
+router.get("/:code", redirectByCode);
 
 export default router;
