@@ -1,12 +1,17 @@
 import db from "../db/index.js"
+import UserService from "../services/UserService.js";
+
+const userService = new UserService();
+
 
 export default (req, res, next) => {
     const auth = req.header("Authorization");
     if (auth?.startsWith("Basic ")) {
         const [email, password] = auth.substring(6, auth.length).split(":");
-        const user = db.users.get(email);
 
-        if(!user || user.password !== password) {
+        const hasAccess = userService.checkPassword(email, password);
+
+        if(!hasAccess) {
             res.status(404).end("No Access");
         } else {
             req.session = {

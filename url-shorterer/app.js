@@ -1,16 +1,22 @@
 import express from "express"
-import userRouter from "./routes/user.js";
-import codeRouter from "./routes/code.js";
-import urlRouter from "./routes/url.js"
+import UserController from "./controllers/UserController.js";
 
 const app = express();
 
 app.use(express.json());
 
-app.use("/user", userRouter);
-app.use("/code", codeRouter);
-app.use("/url", urlRouter);
+app.all("/", (req, res)=>{
+    res.send("Works!");
+});
+
+app.use("/user", new UserController());
+
+app.use((err, req, res, next) => {
+    console.log(err);
+
+    res.status(500).send(err.message);
+});
 
 app.listen(3001, () => {
-    console.log("Server Started");
+    console.log("Server started");
 })
