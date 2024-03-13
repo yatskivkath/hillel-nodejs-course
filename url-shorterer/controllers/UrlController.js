@@ -1,12 +1,10 @@
-import UrlService from "../services/UrlService.js";
-
-const urlService = new UrlService();
+import urlService from "../services/urlService.js";
 
 function createUrl(req, res) {
     const {url} = req.body;
     const userId = req.session.userId;
 
-    const shortUrl = urlService.create(url, userId);
+    const shortUrl = urlService.createUrl(url, userId);
 
     res.json(shortUrl);
 }

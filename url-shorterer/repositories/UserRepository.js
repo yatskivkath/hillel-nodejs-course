@@ -11,7 +11,7 @@ export default class UserRepository {
         return users.get(userId);
     }
 
-    getUserByEmail(email) {
+    getByEmail(email) {
         for (let user of users.values()) {
             if (user.email === email) {
                 return user;

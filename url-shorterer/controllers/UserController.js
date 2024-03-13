@@ -1,6 +1,4 @@
-import UserService from "../services/UserService.js";
-
-const userService = new UserService();
+import userService from "../services/userService.js";
 
 function getAllUsers(req, res) {
     const users = userService.getUsersPublicData();

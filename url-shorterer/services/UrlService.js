@@ -1,38 +1,41 @@
 import UrlRepository from "../repositories/UrlRepository.js";
 import UrlModel from "../models/UrlModel.js";
+import { BASE_URL } from "../constants.js";
 
-export default class UrlService {
-    constructor() {
-        this.urlRepository = new UrlRepository();
+const urlRepository = new UrlRepository();
+
+function createUrl(redirectUrl, userId) {
+    const url =  new UrlModel(redirectUrl, userId);
+    urlRepository.save(url);
+
+    return url;
+}
+
+function getUrl(code) {
+    return urlRepository.get(code);
+}
+
+function getUrlPublicData(code) {
+    const url = urlRepository.get(code);
+
+    return {
+        shortUrl: `${BASE_URL}${url.code}`,
+        url: url.url,
+        visits: url.visits,
     }
+}
 
-    create(redirectUrl, userId) {
-        const url =  new UrlModel(redirectUrl, userId);
-        this.urlRepository.save(url);
+function visitUrl(code) {
+    const url = urlRepository.get(code);
+    urlRepository.update(code, {
+        ...url,
+        visits: url.visits + 1,
+    })
+}
 
-        return url;
-    }
-
-    get(code) {
-        return this.urlRepository.get(code);
-    }
-
-    getUrlPublicData(code) {
-        const url = this.urlRepository.get(code);
-
-        return {
-            ...url,
-            userId: undefined
-        }
-    }
-
-    visit(code) {
-        const url = this.urlRepository.get(code);
-        this.urlRepository.update(code, {
-            ...url,
-            visit: url.visit + 1,
-        })
-    }
-
-
+export default {
+    createUrl,
+    getUrl, 
+    getUrlPublicData,
+    visitUrl,
 }

@@ -5,57 +5,58 @@ import {generate} from "../utils/storageGenerators.js";
 
 const sequenceName = "user";
 
-export default class UserService {
-    constructor() {
-        this.userRepository = new UserRepository();
+const userRepository = new UserRepository();
+
+function createUser(name, email, password) {
+    const user = new UserModel(generate(sequenceName), name, email, password);
+    userRepository.save(user);
+
+    return {
+        ...user,
+        password: undefined
+    };
+}
+
+function getUserByEmail(email) {
+    return userRepository.getByEmail(email);
+}
+
+function getUsersPublicData() {
+    const users = userRepository.getAll();
+
+    const result = [];
+    for (const user of users) {
+        result.push({
+            id: user.userId,
+            name: user.name,
+            email: user.email,
+        })
     }
 
-    create(name, email, password) {
-        const user = new UserModel(generate(sequenceName), name, email, password);
-        this.userRepository.save(user);
+    return result;
+}
 
-        return {
-            ...user,
-            password: undefined
-        };
-    }
-
-    getByEmail(email) {
-        return this.userRepository.getUserByEmail(email);
-    }
-
-    getUsersPublicData() {
-        const users = this.userRepository.getAll();
-
-        const result = [];
-        for (const user of users) {
-            result.push({
-                id: user.userId,
-                name: user.name,
-                email: user.email,
-            })
-        }
-
-        return result;
-    }
-
-    checkPassword(email, password) {
-        if(!email || !password){
-            return false;
-        }
-
-        const user = this.userRepository.getUserByEmail(email);
-
-        if(!user) {
-            return false;
-        }
-
-        if (user?.password === password) {
-            return true;
-        }
-
+function checkPassword(email, password) {
+    if(!email || !password){
         return false;
     }
 
+    const user = userRepository.getByEmail(email);
 
+    if(!user) {
+        return false;
+    }
+
+    if (user?.password === password) {
+        return true;
+    }
+
+    return false;
+}
+
+export default {
+    createUser,
+    getUserByEmail,
+    getUsersPublicData,
+    checkPassword
 }
