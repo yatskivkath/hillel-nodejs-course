@@ -10,7 +10,7 @@ function redirectByCode(req, res) {
     }
 
     urlService.visitUrl(code);
-    res.redirect(301, shortUrl.url);
+    res.redirect(302, shortUrl.url);
 }
 
 export {
