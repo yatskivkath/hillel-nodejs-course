@@ -27,10 +27,8 @@ function getUrlPublicData(code) {
 
 function visitUrl(code) {
     const url = urlRepository.get(code);
-    urlRepository.update(code, {
-        ...url,
-        visits: url.visits + 1,
-    })
+    url.visits++;
+    urlRepository.update(code, url)
 }
 
 export default {
