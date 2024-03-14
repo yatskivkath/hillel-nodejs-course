@@ -1,4 +1,4 @@
-import { CHARACTERS } from "../constants.js"
+const CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
 const generateHash = (len = 5) => {
     if(!Number(len)) {
