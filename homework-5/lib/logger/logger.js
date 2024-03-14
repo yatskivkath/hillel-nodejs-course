@@ -35,5 +35,10 @@ function executeLog(level, category, message) {
 export default {
     getLogger(category) {
         return logger(category);
+    },
+    closeLogger() {
+        for(const appender of appenders) {
+            appender.close();
+        }
     }
 };

@@ -9,10 +9,13 @@ import { ErrorFilterTransformer } from "./utils/ErrorFilterTransformer.js"
 import * as constants from "../constants.js";
 import config from "../config/config.js";
 import { PayloadTransformer } from "./utils/PayloadTransformer.js";
+import { ReadStream } from "./utils/ReadStream.js";
 
 const CSV_HEADER = "Date;Level;Category;Message;Payload\n"
 
 const formatter = formatterStrategy.getFormatter();
+
+let readStream;
 
 function getNames() {
     switch(config.format) {
@@ -43,11 +46,7 @@ function getNames() {
 function listen() {
     const {path, error_path} = getNames();
 
-    const readStream = new Readable({
-        objectMode: true,
-        read() {}
-    });
-
+    readStream = new ReadStream;
     const writeStream = fs.createWriteStream(normalize(path), {encoding: "utf-8", flags: "a+"});
     const writeStreamError = fs.createWriteStream(normalize(error_path), {encoding: "utf-8", flags: "a+"});
 
@@ -67,14 +66,10 @@ function listen() {
     eventEmitter.on("log", (date, level, category, message) => {
         readStream.push({date, level, category, message});
     });
-
-    function destroyStreams() {
-        readStream.push(null);
-    }
-    
-    process.on('beforeExit', destroyStreams);
-    process.on('SIGINT', destroyStreams);
-    process.on('uncaughtException', destroyStreams);
 }
 
-export default {listen}
+function close() {
+    readStream.push(null);
+}
+
+export default {listen, close}
