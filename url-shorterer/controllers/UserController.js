@@ -6,9 +6,9 @@ function getAllUsers(req, res) {
     res.json(users);
 }
 
-function createUser (req, res) {
+async function createUser (req, res) {
     const {name, email, password} = req.body;
-    const user = userService.create(name, email, password);
+    const user = userService.createUser(name, email, password);
 
     res.json(user);
 }

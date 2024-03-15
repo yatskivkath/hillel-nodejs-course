@@ -1,10 +1,10 @@
-import urlService from "../services/urlService";
-import userService from "../services/userService"
+import urlService from "../services/urlService.js";
+import userService from "../services/userService.js"
 
 function getUsersView(req, res) {
     const users = userService.getUsersPublicData();
-
-    res.render("users.ejs", { users });
+    
+    res.render("users.ejs", { users: users });
 }
 
 function getUrlsView(req, res) {
