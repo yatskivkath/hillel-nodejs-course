@@ -8,6 +8,6 @@ const router = new express.Router();
 
 router.get("/users", getUsersView);
 
-router.post("/urls", getUrlsView);
+router.get("/urls", getUrlsView);
 
 export default router;
