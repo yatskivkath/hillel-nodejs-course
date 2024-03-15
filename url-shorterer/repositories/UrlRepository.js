@@ -9,6 +9,10 @@ export default class UrlRepository {
         return urls.get(code);
     }
 
+    getAll() {
+        return urls.values();
+    }
+
     update(code, url) {
         urls.set(code, url);
         return urls.get(code);

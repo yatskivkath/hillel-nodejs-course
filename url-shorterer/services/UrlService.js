@@ -25,6 +25,12 @@ function getUrlPublicData(code) {
     }
 }
 
+function getUrlByUser(userId) {
+    const urls = urlRepository.getAll();
+
+    return urls.filter((url) => url.userId === userId);
+}
+
 function visitUrl(code) {
     const url = urlRepository.get(code);
     url.visits++;
@@ -36,4 +42,5 @@ export default {
     getUrl, 
     getUrlPublicData,
     visitUrl,
+    getUrlByUser,
 }

@@ -11,6 +11,9 @@ app.all("/", (req, res)=>{
     res.send("Works!");
 });
 
+app.set("views", "views");
+app.set("view engine", "ejs");
+
 app.use("/users", userRouter);
 app.use("/urls", urlRouter);
 app.use("/code", codeRouter);
