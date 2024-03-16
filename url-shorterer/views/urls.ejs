@@ -59,7 +59,27 @@
                     </div>`
             }
             
+        const form = document.getElementById("new-url-form");
 
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const url = document.getElementById("url");
+
+            const raw = JSON.stringify({
+                "url": url.value,
+            });
+
+
+            fetch("/urls/create", {
+                method: "POST",
+                body: raw,
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Basic ${email}:${password}`
+                }
+            });
+        });
         })()
     </script>
 </body>
