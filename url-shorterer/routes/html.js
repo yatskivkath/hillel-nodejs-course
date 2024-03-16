@@ -4,8 +4,6 @@ import { getUrlsView, getUsersView } from "../controllers/htmlController.js";
 
 const router = new express.Router();
 
-// router.use(auth);
-
 router.get("/users", getUsersView);
 
 router.get("/urls", getUrlsView);
