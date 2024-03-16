@@ -20,7 +20,18 @@ function getUrl(req, res) {
     res.json(shortUrl);
 }
 
+function getUrlsByUser(req, res) {
+    const userId = req.session.userId;
+
+    const urls = 
+        urlService
+        .getUrlByUser(userId);
+
+    res.json(urls);
+}
+
 export {
     createUrl,
     getUrl,
+    getUrlsByUser,
 }
