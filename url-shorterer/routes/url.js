@@ -1,10 +1,12 @@
 import express from "express";
-import { createUrl, getUrl } from "../controllers/urlController.js";
+import { createUrl, getUrl, getUrlsByUser } from "../controllers/urlController.js";
 import auth from "../middlewares/auth.js";
 
 const router = new express.Router();
 
 router.use(auth);
+
+router.get("/", getUrlsByUser);
 
 router.get("/info/:code", getUrl);
 

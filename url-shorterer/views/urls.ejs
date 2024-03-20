@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URLs Page</title>
+    <style>
+        .urls--container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+        }
+        .urls__item {
+            padding: 0 15px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <h1>URLs Page</h1>
+    <section>
+        <h2>Create a Short URL</h2>
+        <form id="new-url-form" action="">
+            <div>
+                <label for="url">Url:</label>
+                <input type="text" name="url" id="url" required>
+            </div>
+        </form>
+    </section>
+    <section>
+        <h2>List of URLs</h2>
+        <div id="urls--container" class="urls--container">
+        </div>
+    </section>
+    <script>
+        (async () => {
+            const email = localStorage.getItem("email");
+            const password = localStorage.getItem("password");
+
+            const response = await fetch("/urls", {
+                method: "GET",
+                headers: {
+                    "Authorization": `Basic ${email}:${password}`
+                }
+            });
+
+            const urls = await response.json();
+
+            const container = document.getElementById("urls--container");
+            for(let url of urls) {
+                container.innerHTML += `
+                    <div class="urls__item">
+                        <h4 style="margin-bottom: 0;">
+                            ${url.shortUrl}
+                        </h4>
+                        <p style="margin-top: 5px;">
+                            ${url.url}
+                        </p>
+                    </div>`
+            }
+            
+        const form = document.getElementById("new-url-form");
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const url = document.getElementById("url");
+
+            const raw = JSON.stringify({
+                "url": url.value,
+            });
+
+
+            fetch("/urls/create", {
+                method: "POST",
+                body: raw,
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Basic ${email}:${password}`
+                }
+            });
+        });
+        })()
+    </script>
+</body>
+</html>

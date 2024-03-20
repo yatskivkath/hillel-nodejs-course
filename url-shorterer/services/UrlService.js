@@ -25,6 +25,23 @@ function getUrlPublicData(code) {
     }
 }
 
+function getUrlByUser(userId) {
+    const urls = urlRepository.getAll();
+
+    const result = [];
+    for (const url of urls) {
+        if(url.userId == userId) {
+            result.push({
+                shortUrl: `${BASE_URL}${url.code}`,
+                url: url.url,
+                visits: url.visits,
+            })
+        }
+    }
+
+    return result;
+}
+
 function visitUrl(code) {
     const url = urlRepository.get(code);
     url.visits++;
@@ -36,4 +53,5 @@ export default {
     getUrl, 
     getUrlPublicData,
     visitUrl,
+    getUrlByUser,
 }
