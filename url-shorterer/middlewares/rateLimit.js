@@ -9,20 +9,24 @@ async function rateLimitByCode (req, res, next) {
     if (isPassed) {
         return next();
     } else {
-        res.status(429).end("Rate Limit by Code");
+        res.status(429).end("Rate Limit");
     }
 }
 
 async function rateLimitByUser (req, res, next) {
     const {code} = req.params;
-    const {userId} = urlService.getUrl(code);
+    const url = urlService.getUrl(code);
 
-    const isPassed = await rateLimitService.checkRateLimitUser(userId);
+    if(!url) {
+        res.status(404).end("Not Found");
+    }
+
+    const isPassed = await rateLimitService.checkRateLimitUser(url?.userId);
 
     if (isPassed) {
         return next();
     } else {
-        res.status(429).end("Rate Limit by User");
+        res.status(429).end("Rate Limit");
     }
 }
 

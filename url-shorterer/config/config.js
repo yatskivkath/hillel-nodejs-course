@@ -1,11 +1,15 @@
 import fs from "fs";
 
-const REQUESTS_LIMIT = 1000;
-const TIME_LIMIT = 3600;
+const REQUESTS_LIMIT_PER_CODE = 1000;
+const TIME_LIMIT_PER_CODE = 3600;
+const REQUESTS_LIMIT_PER_USER = 1000;
+const TIME_LIMIT_PER_USER = 3600;
 
 const defaultConfig = {
-    requestsLimit: REQUESTS_LIMIT,
-    timeLimit: TIME_LIMIT,
+    requestsLimitPerCode: REQUESTS_LIMIT_PER_CODE,
+    requestsLimitPerUser: REQUESTS_LIMIT_PER_USER,
+    timelimitPerCode: TIME_LIMIT_PER_CODE,
+    timeLimitPerUser: TIME_LIMIT_PER_USER,
 }
 
 function readFileConfig(path) {
@@ -24,12 +28,28 @@ function initConfig() {
         fileConfig = {};
     }
     
-    const requestsLimit = process.env.RATE_LIMIT_REQUESTS ?? fileConfig.requestsLimit ?? defaultConfig.requestsLimit;
-    const timeLimit = process.env.RATE_LIMIT_TIME ?? fileConfig.timeLimit ?? defaultConfig.timeLimit;
+    const requestsLimitPerCode = parseInt(
+        process.env.RATE_LIMIT_REQUESTS_PER_CODE ?? 
+        fileConfig.requestsLimitPerCode ?? 
+        defaultConfig.requestsLimitPerCode);
+    const timeLimiPerCode = parseInt(
+        process.env.RATE_LIMIT_TIME_PER_CODE ??
+        fileConfig.timelimitPerCode ??
+        defaultConfig.timelimitPerCode);
+    const requestsLimitPerUser = parseInt(
+        process.env.RATE_LIMIT_REQUESTS_PER_USER ?? 
+        fileConfig.requestsLimitPerUser ?? 
+        defaultConfig.requestsLimitPerUser);
+    const timeLimiPerUser = parseInt(
+        process.env.RATE_LIMIT_TIME_PER_USER ??
+        fileConfig.timelimitPerUser ??
+        defaultConfig.timeLimitPerUser);
 
     return {
-        requestsLimit,
-        timeLimit,
+        requestsLimitPerCode,
+        timeLimiPerCode,
+        requestsLimitPerUser,
+        timeLimiPerUser,
     };
 }
 

@@ -19,13 +19,13 @@ async function checkRateLimit(key, limit, expires) {
 }
 
 async function checkRateLimitCode(code) {
-    const key = `rl:code${code}`;
-    return await checkRateLimit(key, config.requestsLimit, config.timeLimit);
+    const key = `rl:code:${code}`;
+    return await checkRateLimit(key, config.requestsLimitPerCode, config.timeLimiPerCode);
 }
 
 async function checkRateLimitUser(userId) {
-    const key = `rl:user${userId}`;
-    return await checkRateLimit(key, config.requestsLimit, config.timeLimit);
+    const key = `rl:user:${userId}`;
+    return await checkRateLimit(key, config.requestsLimitPerUser, config.timeLimiPerUser);
 }
 
 export default {
