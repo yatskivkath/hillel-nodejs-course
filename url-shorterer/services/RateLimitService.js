@@ -1,4 +1,5 @@
 import redisClient from "../redis/redisClient.js";
+import config from "../config/config.js";
 
 async function checkRateLimit(key, limit, expires) {
     const rates = await redisClient.get(key);
@@ -19,12 +20,12 @@ async function checkRateLimit(key, limit, expires) {
 
 async function checkRateLimitCode(code) {
     const key = `rl:code${code}`;
-    return await checkRateLimit(key, 3, 60);
+    return await checkRateLimit(key, config.requestsLimit, config.timeLimit);
 }
 
 async function checkRateLimitUser(userId) {
     const key = `rl:user${userId}`;
-    return await checkRateLimit(key, 3, 60);
+    return await checkRateLimit(key, config.requestsLimit, config.timeLimit);
 }
 
 export default {

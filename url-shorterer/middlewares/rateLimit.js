@@ -9,7 +9,7 @@ async function rateLimitByCode (req, res, next) {
     if (isPassed) {
         return next();
     } else {
-        res.status(429).end("Rate Limit");
+        res.status(429).end("Rate Limit by Code");
     }
 }
 
@@ -22,7 +22,7 @@ async function rateLimitByUser (req, res, next) {
     if (isPassed) {
         return next();
     } else {
-        res.status(429).end("Rate Limit");
+        res.status(429).end("Rate Limit by User");
     }
 }
 
