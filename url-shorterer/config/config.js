@@ -27,9 +27,6 @@ function initConfig() {
     const requestsLimit = process.env.RATE_LIMIT_REQUESTS ?? fileConfig.requestsLimit ?? defaultConfig.requestsLimit;
     const timeLimit = process.env.RATE_LIMIT_TIME ?? fileConfig.timeLimit ?? defaultConfig.timeLimit;
 
-    console.log(requestsLimit);
-    console.log(timeLimit)
-
     return {
         requestsLimit,
         timeLimit,
