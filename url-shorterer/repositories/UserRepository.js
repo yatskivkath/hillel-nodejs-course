@@ -1,27 +1,23 @@
-const users = new Map();
-
-users.set("0", {userId: "0", name: "Kateryna Yatskiv", email: "test@mail.com", password: "admin"});
+import pgClient from "../postgres/client.js"
 
 export default class UserRepository {
-    save(user) {
-        users.set(user.userId, user);
+    async save(user) {
+        const newUser = await pgClient.query("INSERT INTO users (name, email, password) VALUES ($1, $2, $3)", [user.name, user.email, user.password]);
+        return newUser;
     }
 
-    get(userId) {
-        return users.get(userId);
+    async get(userId) {
+        const user = await pgClient.query("SELECT * FROM users WHERE id=$1", [userId]);
+        return user.rows?.[0] ?? null;
     }
 
-    getByEmail(email) {
-        for (let user of users.values()) {
-            if (user.email === email) {
-                return user;
-            }
-        }
-
-        return null;
+    async getByEmail(email) {
+        const user = await pgClient.query("SELECT * FROM users WHERE email=$1", [email]);
+        return user.rows?.[0] ?? 0;
     }
 
-    getAll() {
-        return users.values();
+    async getAll() {
+        const users = await pgClient.query("SELECT * FROM users");
+        return users.rows;
     }
 }
