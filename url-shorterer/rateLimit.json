@@ -1,0 +1,6 @@
+{
+    "requestsLimitPerCode": 3,
+    "requestsLimitPerUser": 60,
+    "timelimitPerCode": 100,
+    "timeLimitPerUser": 3600
+}

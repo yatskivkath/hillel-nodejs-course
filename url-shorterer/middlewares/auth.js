@@ -11,12 +11,10 @@ export default (req, res, next) => {
             res.status(404).end("No Access");
         } else {
             const user = userService.getUserByEmail(email);
-            req.session = {
-                email,
-                userId: user.userId,
-            };
-            next();
-            return;
+
+            req.session.userId = user.userId;
+            req.session.email = email;
+            return next();
         }
     }
 
