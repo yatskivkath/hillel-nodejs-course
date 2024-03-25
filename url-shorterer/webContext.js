@@ -50,9 +50,17 @@ function initViews(app){
 }
 
 // TODO: Import logger and error handling
+function initErrorHandling(app){
+    app.use((err, req, res, next) => {
+        console.log(err);
+
+        res.status(500).send(err.message);
+    });
+}
 
 export default function (app){
     initMiddlewares(app);
     initViews(app);
-    initControllers(app)
+    initControllers(app);
+    initErrorHandling(app);
 }

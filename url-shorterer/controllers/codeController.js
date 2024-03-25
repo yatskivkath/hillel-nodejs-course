@@ -1,15 +1,15 @@
 import urlService from "../services/urlService.js";
 
-function redirectByCode(req, res) {
+async function redirectByCode(req, res) {
     const { code } = req.params;
 
-    const shortUrl = urlService.getUrl(code);
+    const shortUrl = await urlService.getUrl(code);
 
-    if(!shortUrl) {
+    if(!shortUrl?.url) {
         res.status(404).end("Not Found");
     }
 
-    urlService.visitUrl(code);
+    await urlService.visitUrl(code);
     res.redirect(302, shortUrl.url);
 }
 

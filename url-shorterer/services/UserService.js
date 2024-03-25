@@ -7,9 +7,9 @@ const sequenceName = "user";
 
 const userRepository = new UserRepository();
 
-function createUser(name, email, password) {
+async function createUser(name, email, password) {
     const user = new UserModel(generate(sequenceName), name, email, password);
-    userRepository.save(user);
+    await userRepository.save(user);
 
     return {
         ...user,
@@ -17,17 +17,17 @@ function createUser(name, email, password) {
     };
 }
 
-function getUserByEmail(email) {
-    return userRepository.getByEmail(email);
+async function getUserByEmail(email) {
+    return await userRepository.getByEmail(email);
 }
 
-function getUsersPublicData() {
-    const users = userRepository.getAll();
+async function getUsersPublicData() {
+    const users = await userRepository.getAll();
 
     const result = [];
     for (const user of users) {
         result.push({
-            id: user.userId,
+            id: user.user_id,
             name: user.name,
             email: user.email,
         })
@@ -36,12 +36,12 @@ function getUsersPublicData() {
     return result;
 }
 
-function checkPassword(email, password) {
+async function checkPassword(email, password) {
     if(!email || !password){
         return false;
     }
 
-    const user = userRepository.getByEmail(email);
+    const user = await userRepository.getByEmail(email);
 
     if(!user) {
         return false;

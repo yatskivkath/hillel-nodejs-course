@@ -21,7 +21,7 @@ async function rateLimitByUser (req, res, next) {
         res.status(404).end("Not Found");
     }
 
-    const isPassed = await rateLimitService.checkRateLimitUser(url?.userId);
+    const isPassed = await rateLimitService.checkRateLimitUser(url?.user_id);
 
     if (isPassed) {
         return next();

@@ -1,15 +1,13 @@
 import userService from "../services/userService.js";
 
-function getAllUsers(req, res) {
-    const users = userService.getUsersPublicData();
-
+async function getAllUsers(req, res) {
+    const users = await userService.getUsersPublicData();
     res.json(users);
 }
 
-function createUser (req, res) {
+async function createUser (req, res) {
     const {name, email, password} = req.body;
-    const user = userService.createUser(name, email, password);
-
+    const user = await userService.createUser(name, email, password);
     res.json(user);
 }
 

@@ -6,7 +6,9 @@ async function checkRateLimit(key, limit, expires) {
     
 
     if(!rates) {
-        await redisClient.setex(key, expires, 1);
+        await redisClient.set(key, 1, {
+            EX: expires,
+        });
         return true;
     } else if(rates < limit) {
         await redisClient.incr(key);
@@ -23,8 +25,8 @@ async function checkRateLimitCode(code) {
     return await checkRateLimit(key, config.requestsLimitPerCode, config.timeLimiPerCode);
 }
 
-async function checkRateLimitUser(userId) {
-    const key = `rl:user:${userId}`;
+async function checkRateLimitUser(user_id) {
+    const key = `rl:user:${user_id}`;
     return await checkRateLimit(key, config.requestsLimitPerUser, config.timeLimiPerUser);
 }
 

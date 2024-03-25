@@ -1,18 +1,18 @@
 import urlService from "../services/urlService.js";
 
-function createUrl(req, res) {
+async function createUrl(req, res) {
     const {url} = req.body;
-    const userId = req.session.userId;
+    const user_id = req.session.user_id;
 
-    const shortUrl = urlService.createUrl(url, userId);
+    const shortUrl = await urlService.createUrl(url, user_id);
 
     res.json(shortUrl);
 }
 
-function getUrl(req, res) {
+async function getUrl(req, res) {
     const { code } = req.params
     
-    const shortUrl = urlService.getUrlPublicData(code);
+    const shortUrl = await urlService.getUrlPublicData(code);
     if(!shortUrl) {
         res.status(404).end("Not Found");
     }
@@ -20,12 +20,10 @@ function getUrl(req, res) {
     res.json(shortUrl);
 }
 
-function getUrlsByUser(req, res) {
-    const userId = req.session.userId;
+async function getUrlsByUser(req, res) {
+    const user_id = req.session.user_id;
 
-    const urls = 
-        urlService
-        .getUrlByUser(userId);
+    const urls = await urlService.getUrlByUser(user_id);
 
     res.json(urls);
 }

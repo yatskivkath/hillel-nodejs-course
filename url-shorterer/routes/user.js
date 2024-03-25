@@ -1,6 +1,6 @@
 import express from "express"
 import { createUser, getAllUsers } from "../controllers/userController.js"
-import auth from "../middlewares/auth.js";
+import auth from "../middlewares/authMiddleware.js";
 const router = new express.Router();
 
 router.post("/create", createUser);
