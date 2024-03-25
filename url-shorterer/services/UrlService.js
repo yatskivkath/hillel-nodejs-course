@@ -44,6 +44,10 @@ async function getUrlByUser(user_id) {
 
 async function visitUrl(code) {
     const url = await urlRepository.get(code);
+    if(!url) {
+        throw new Error("Url was not found")
+    }
+    
     await urlRepository.updateVisits(code, url.visits + 1);
 }
 

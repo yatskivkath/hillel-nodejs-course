@@ -17,7 +17,7 @@ export default class UrlRepository {
     }
 
     async updateVisits(code, visits) {
-        const url = await pgClient("UPDATE urls SET visits=$1 WHERE code=$2", [visits, code]);
+        const url = await pgClient.query("UPDATE urls SET visits=$1 WHERE code=$2", [visits, code]);
         return url;
     }
 }
