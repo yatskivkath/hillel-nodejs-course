@@ -23,8 +23,8 @@ async function checkRateLimitCode(code) {
     return await checkRateLimit(key, config.requestsLimitPerCode, config.timeLimiPerCode);
 }
 
-async function checkRateLimitUser(userId) {
-    const key = `rl:user:${userId}`;
+async function checkRateLimitUser(user_id) {
+    const key = `rl:user:${user_id}`;
     return await checkRateLimit(key, config.requestsLimitPerUser, config.timeLimiPerUser);
 }
 

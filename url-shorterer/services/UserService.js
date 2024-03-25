@@ -27,7 +27,7 @@ async function getUsersPublicData() {
     const result = [];
     for (const user of users) {
         result.push({
-            id: user.userId,
+            id: user.user_id,
             name: user.name,
             email: user.email,
         })

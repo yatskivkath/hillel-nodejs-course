@@ -6,14 +6,14 @@ export default class UserRepository {
         return newUser;
     }
 
-    async get(userId) {
-        const user = await pgClient.query("SELECT * FROM users WHERE id=$1", [userId]);
+    async get(user_id) {
+        const user = await pgClient.query("SELECT * FROM users WHERE id=$1", [user_id]);
         return user.rows?.[0] ?? null;
     }
 
     async getByEmail(email) {
         const user = await pgClient.query("SELECT * FROM users WHERE email=$1", [email]);
-        return user.rows?.[0] ?? 0;
+        return user.rows?.[0] ?? null;
     }
 
     async getAll() {

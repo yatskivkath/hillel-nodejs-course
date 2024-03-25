@@ -5,12 +5,12 @@ export default class UrlModel{
     url;
     visits = 0;
     createdAt = Date.now();
-    userId;
+    user_id;
 
-    constructor(url, userId) {
+    constructor(url, user_id) {
         this.url = url;
         this.code = generateHash();
-        this.userId = userId;
+        this.user_id = user_id;
     }
 
 }

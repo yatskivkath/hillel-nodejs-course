@@ -12,7 +12,7 @@ export default async (req, res, next) => {
         } else {
             const user = await userService.getUserByEmail(email);
 
-            req.session.userId = user.userId;
+            req.session.user_id = user.user_id;
             req.session.email = email;
             return next();
         }

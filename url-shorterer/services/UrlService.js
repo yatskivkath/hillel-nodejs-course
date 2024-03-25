@@ -4,19 +4,19 @@ import { BASE_URL } from "../constants.js";
 
 const urlRepository = new UrlRepository();
 
-function createUrl(redirectUrl, userId) {
-    const url =  new UrlModel(redirectUrl, userId);
-    urlRepository.save(url);
+async function createUrl(redirectUrl, user_id) {
+    const url =  new UrlModel(redirectUrl, user_id);
+    await urlRepository.save(url);
 
     return url;
 }
 
-function getUrl(code) {
-    return urlRepository.get(code);
+async function getUrl(code) {
+    return await urlRepository.get(code);
 }
 
-function getUrlPublicData(code) {
-    const url = urlRepository.get(code);
+async function getUrlPublicData(code) {
+    const url = await urlRepository.get(code);
 
     return {
         shortUrl: `${BASE_URL}${url.code}`,
@@ -25,12 +25,12 @@ function getUrlPublicData(code) {
     }
 }
 
-function getUrlByUser(userId) {
-    const urls = urlRepository.getAll();
+async function getUrlByUser(user_id) {
+    const urls = await urlRepository.getAll();
 
     const result = [];
     for (const url of urls) {
-        if(url.userId == userId) {
+        if(url.user_id == user_id) {
             result.push({
                 shortUrl: `${BASE_URL}${url.code}`,
                 url: url.url,
@@ -42,10 +42,9 @@ function getUrlByUser(userId) {
     return result;
 }
 
-function visitUrl(code) {
-    const url = urlRepository.get(code);
-    url.visits++;
-    urlRepository.update(code, url)
+async function visitUrl(code) {
+    const url = await urlRepository.get(code);
+    await urlRepository.updateVisits(code, url.visits + 1);
 }
 
 export default {

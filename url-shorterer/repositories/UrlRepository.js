@@ -1,20 +1,24 @@
-const urls = new Map();
+import pgClient from "../postgres/client.js"
 
 export default class UrlRepository {
-    save(url) {
-        urls.set(url.code, url);
+    async save(url) {
+        console.log(url)
+        const newUrl = await pgClient.query("INSERT INTO urls (code, url, user_id) VALUES ($1, $2, $3)", [url.code, url.url, url.user_id]);
+        return newUrl;
     }
 
-    get(code) {
-        return urls.get(code);
+    async get(code) {
+        const url = await pgClient.query("SELECT * FROM urls WHERE code=$1", [code]);
+        return url.rows?.[0] ?? null;
     }
 
-    getAll() {
-        return urls.values();
+    async getAll() {
+        const urls = await pgClient.query("SELECT * FROM urls");
+        return urls.rows;
     }
 
-    update(code, url) {
-        urls.set(code, url);
-        return urls.get(code);
+    async updateVisits(code, visits) {
+        const url = await pgClient("UPDATE urls SET visits=$1 WHERE code=$2", [visits, code]);
+        return url;
     }
 }
