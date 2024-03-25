@@ -2,7 +2,6 @@ import pgClient from "../postgres/client.js"
 
 export default class UrlRepository {
     async save(url) {
-        console.log(url)
         const newUrl = await pgClient.query("INSERT INTO urls (code, url, user_id) VALUES ($1, $2, $3)", [url.code, url.url, url.user_id]);
         return newUrl;
     }
