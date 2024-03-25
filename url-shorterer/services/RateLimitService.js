@@ -6,8 +6,9 @@ async function checkRateLimit(key, limit, expires) {
     
 
     if(!rates) {
-        await redisClient.set(key, 1);
-        await redisClient.expire(key, expires);
+        await redisClient.set(key, 1, {
+            EX: expires,
+        });
         return true;
     } else if(rates < limit) {
         await redisClient.incr(key);
